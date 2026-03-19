@@ -81,6 +81,7 @@ packages:
   # developer: !include common/developer.yaml
 
 http_request:
+  buffer_size_rx: 2048 
 
 safe_mode:
 

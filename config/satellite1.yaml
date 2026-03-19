@@ -21,6 +21,14 @@ packages:
       on_connect:
         - delay: 5s  # Gives time for improv results to be transmitted
         - ble.disable:
+        # Enable/disable Sendspin static adjustment delay if the jack is plugged in or not
+        - if:
+            condition:
+              - binary_sensor.is_on: line_out_sensor
+            then:
+              - sendspin.media_source.enable_static_delay_adjustment:
+            else:
+              - sendspin.media_source.disable_static_delay_adjustment:
 
     satellite1:
       on_xmos_no_response:
@@ -95,35 +103,19 @@ external_components:
       - dac_switcher
   # ESPHome PRs for sendspin and related features
   - source:
-      # https://github.com/esphome/esphome/pull/12256
+      # https://github.com/esphome/esphome/pull/14933
       type: git
-      url: https://github.com/esphome/esphome
-      ref: a2d98e1d5e020200db8f3caf27a74a939a661dc4
-    components: [audio]
-  - source:
-      # https://github.com/esphome/esphome/pull/12258
-      type: git
-      url: https://github.com/esphome/esphome
-      ref: b4b7c5b25ebe0f2ab988f700219fa3c57b2377b7
-    components: [media_player]
-  - source:
-      # https://github.com/esphome/esphome/pull/12284
-      type: git
-      url: https://github.com/esphome/esphome
-      ref: d48058e140c98f5c2d902661d851a6b712d62434
-    components: [sendspin]
-  - source:
-      # https://github.com/esphome/esphome/pull/14013
-      type: git
-      url: https://github.com/esphome/esphome
-      ref: 51dcce3d1f22865ebb458a5447bbc877ac946b5a
-    components: [mdns]
+      url: https://github.com/kahrendt/esphome
+      ref: 890e33f99af2c2ea15dc74c3ec4cf32d25203526
+    components: [const, media_source, sendspin]
+    refresh: 60s
   - source:
       # https://github.com/esphome/esphome/pull/12429
       type: git
       url: https://github.com/esphome/esphome
-      ref: b49b09b6ae56502aa3ce51be86f90d732d019b2c
-    components: [file, http_request, media_source, speaker_source]
+      ref: ff8ce89556748509d7ee8724e12d9d43d3c8c1e8
+    refresh: 0s
+    components: [http_request]
 
 logger:
   deassert_rts_dtr: true

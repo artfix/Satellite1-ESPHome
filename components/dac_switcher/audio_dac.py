@@ -41,7 +41,7 @@ DAC_SWITCHER_ACTION_SCHEMA = cv.Schema(
 
 
 @automation.register_action(
-    "dac_switcher.select_tas2780", SelectTas2780Action, DAC_SWITCHER_ACTION_SCHEMA
+    "dac_switcher.select_tas2780", SelectTas2780Action, DAC_SWITCHER_ACTION_SCHEMA, synchronous=True
 )
 async def dac_switcher_select_tas2780_to_code(config, action_id, template_arg, args):
     var = cg.new_Pvariable(action_id, template_arg)
@@ -50,7 +50,7 @@ async def dac_switcher_select_tas2780_to_code(config, action_id, template_arg, a
 
 
 @automation.register_action(
-    "dac_switcher.select_pcm5122", SelectPcm5122Action, DAC_SWITCHER_ACTION_SCHEMA
+    "dac_switcher.select_pcm5122", SelectPcm5122Action, DAC_SWITCHER_ACTION_SCHEMA, synchronous=True
 )
 async def dac_switcher_select_pcm5122_to_code(config, action_id, template_arg, args):
     var = cg.new_Pvariable(action_id, template_arg)
