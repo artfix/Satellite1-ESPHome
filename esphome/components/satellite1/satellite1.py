@@ -83,9 +83,10 @@ RESET_XMOS_ACTION_SCHEMA = automation.maybe_simple_id(
     }
 )
 @automation.register_action(
-    "satellite1.xmos_hardware_reset", 
-    XMOSHardwareResetAction, 
-    RESET_XMOS_ACTION_SCHEMA)
+    "satellite1.xmos_hardware_reset",
+    XMOSHardwareResetAction,
+    RESET_XMOS_ACTION_SCHEMA,
+    synchronous=True)
 async def erase_memory_action_to_code(config, action_id, template_arg, args):
     var = cg.new_Pvariable(action_id, template_arg)
     await cg.register_parented(var, config[CONF_SATELLITE1])

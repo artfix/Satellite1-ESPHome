@@ -80,21 +80,21 @@ TAS2780_ACTION_SCHEMA = cv.Schema(
 )
 
 
-@automation.register_action("tas2780.deactivate", DeactivateAction, TAS2780_ACTION_SCHEMA)
+@automation.register_action("tas2780.deactivate", DeactivateAction, TAS2780_ACTION_SCHEMA, synchronous=True)
 async def tas2780_deactivate_to_code(config, action_id, template_arg, args):
     var = cg.new_Pvariable(action_id, template_arg)
     await cg.register_parented(var, config[CONF_ID])
     return var
 
 
-@automation.register_action("tas2780.reset", ResetAction, TAS2780_ACTION_SCHEMA)
+@automation.register_action("tas2780.reset", ResetAction, TAS2780_ACTION_SCHEMA, synchronous=True)
 async def tas2780_reset_to_code(config, action_id, template_arg, args):
     var = cg.new_Pvariable(action_id, template_arg)
     await cg.register_parented(var, config[CONF_ID])
     return var
 
 
-@automation.register_action("tas2780.activate", ActivateAction, TAS2780_ACTION_SCHEMA)
+@automation.register_action("tas2780.activate", ActivateAction, TAS2780_ACTION_SCHEMA, synchronous=True)
 async def tas2780_activate_to_code(config, action_id, template_arg, args):
     parent = await cg.get_variable(config[CONF_ID])
     var = cg.new_Pvariable(action_id, template_arg, parent)
@@ -115,7 +115,7 @@ TAS2780_UPDATE_CONFIG_SCHEMA = cv.Schema(
 )
 
 
-@automation.register_action("tas2780.update_config", UpdateConfigAction, TAS2780_UPDATE_CONFIG_SCHEMA)
+@automation.register_action("tas2780.update_config", UpdateConfigAction, TAS2780_UPDATE_CONFIG_SCHEMA, synchronous=True)
 async def tas2780_update_config_to_code(config, action_id, template_arg, args):
     parent = await cg.get_variable(config[CONF_ID])
     var = cg.new_Pvariable(action_id, template_arg, parent)
