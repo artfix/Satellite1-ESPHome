@@ -26,11 +26,11 @@ ResetAction = tas2780_ns.class_(
 )
 
 ActivateAction = tas2780_ns.class_(
-    "ActivateAction", automation.Action
+    "ActivateAction", automation.Action, cg.Parented.template(TAS2780)
 )
 
 UpdateConfigAction = tas2780_ns.class_(
-    "UpdateConfigAction", automation.Action
+    "UpdateConfigAction", automation.Action, cg.Parented.template(TAS2780)
 )
 
 DeactivateAction = tas2780_ns.class_(
@@ -42,7 +42,6 @@ CONF_VOL_RANGE_MAX = "vol_range_max"
 CONF_AMP_LEVEL = "amp_level"
 CONF_POWER_MODE = "power_mode"
 CONF_PVDD_SENSOR = "pvdd_sensor"
-CONF_TEMPERATURE_SENSOR = "temperature_sensor"
 
 CONFIG_SCHEMA = (
     cv.Schema(
@@ -59,7 +58,7 @@ CONFIG_SCHEMA = (
                 device_class=DEVICE_CLASS_VOLTAGE,
                 state_class=STATE_CLASS_MEASUREMENT,
             ),
-            cv.Optional(CONF_TEMPERATURE_SENSOR): sensor.sensor_schema(
+            cv.Optional(CONF_TEMPERATURE): sensor.sensor_schema(
                 unit_of_measurement=UNIT_CELSIUS,
                 accuracy_decimals=1,
                 device_class=DEVICE_CLASS_TEMPERATURE,
@@ -67,12 +66,14 @@ CONFIG_SCHEMA = (
             ),
         }
     )
-    .extend(cv.COMPONENT_SCHEMA)
+    .extend(cv.polling_component_schema("5s"))
     .extend(i2c.i2c_device_schema(0x38))
 )
 
 
-TAS2780_ACTION_SCHEMA = cv.Schema(
+TAS2780_BASE_ACTION_SCHEMA = cv.Schema({cv.GenerateID(): cv.use_id(TAS2780)})
+
+TAS2780_ACTIVATE_ACTION_SCHEMA = cv.Schema(
     {
         cv.GenerateID(): cv.use_id(TAS2780),
         cv.Optional(CONF_MODE, default=2): cv.templatable(cv.int_range(min=0, max=3)),
@@ -80,24 +81,24 @@ TAS2780_ACTION_SCHEMA = cv.Schema(
 )
 
 
-@automation.register_action("tas2780.deactivate", DeactivateAction, TAS2780_ACTION_SCHEMA, synchronous=True)
+@automation.register_action("tas2780.deactivate", DeactivateAction, TAS2780_BASE_ACTION_SCHEMA, synchronous=True)
 async def tas2780_deactivate_to_code(config, action_id, template_arg, args):
     var = cg.new_Pvariable(action_id, template_arg)
     await cg.register_parented(var, config[CONF_ID])
     return var
 
 
-@automation.register_action("tas2780.reset", ResetAction, TAS2780_ACTION_SCHEMA, synchronous=True)
+@automation.register_action("tas2780.reset", ResetAction, TAS2780_BASE_ACTION_SCHEMA, synchronous=True)
 async def tas2780_reset_to_code(config, action_id, template_arg, args):
     var = cg.new_Pvariable(action_id, template_arg)
     await cg.register_parented(var, config[CONF_ID])
     return var
 
 
-@automation.register_action("tas2780.activate", ActivateAction, TAS2780_ACTION_SCHEMA, synchronous=True)
+@automation.register_action("tas2780.activate", ActivateAction, TAS2780_ACTIVATE_ACTION_SCHEMA, synchronous=True)
 async def tas2780_activate_to_code(config, action_id, template_arg, args):
-    parent = await cg.get_variable(config[CONF_ID])
-    var = cg.new_Pvariable(action_id, template_arg, parent)
+    var = cg.new_Pvariable(action_id, template_arg)
+    await cg.register_parented(var, config[CONF_ID])
     mode = config.get(CONF_MODE)
     template = await cg.templatable(mode, args, cg.uint8)
     cg.add(var.set_mode(template))
@@ -117,8 +118,8 @@ TAS2780_UPDATE_CONFIG_SCHEMA = cv.Schema(
 
 @automation.register_action("tas2780.update_config", UpdateConfigAction, TAS2780_UPDATE_CONFIG_SCHEMA, synchronous=True)
 async def tas2780_update_config_to_code(config, action_id, template_arg, args):
-    parent = await cg.get_variable(config[CONF_ID])
-    var = cg.new_Pvariable(action_id, template_arg, parent)
+    var = cg.new_Pvariable(action_id, template_arg)
+    await cg.register_parented(var, config[CONF_ID])
     if CONF_VOL_RANGE_MIN in config:
         template = await cg.templatable(config[CONF_VOL_RANGE_MIN], args, float)
         cg.add(var.set_vol_range_min(template))
@@ -149,6 +150,6 @@ async def to_code(config):
         sens = await sensor.new_sensor(config[CONF_PVDD_SENSOR])
         cg.add(var.set_pvdd_sensor(sens))
 
-    if CONF_TEMPERATURE_SENSOR in config:
-        sens = await sensor.new_sensor(config[CONF_TEMPERATURE_SENSOR])
+    if CONF_TEMPERATURE in config:
+        sens = await sensor.new_sensor(config[CONF_TEMPERATURE])
         cg.add(var.set_temperature_sensor(sens))
