@@ -24,7 +24,7 @@ union FusbStatus {
   };
 };
 
-class FUSB302B : public PowerDelivery, public Component, protected i2c::I2CDevice {
+class FUSB302B : public PowerDelivery, public Component, public i2c::I2CDevice {
   friend void msg_reader_task(void *params);
   friend void trigger_task(void *params);
   friend void fusb302b_isr_handler(void *arg);
