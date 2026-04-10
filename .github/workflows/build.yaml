@@ -20,7 +20,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Set version variables
         run: |
@@ -34,11 +34,11 @@ jobs:
 
       - name: Get ESPHome version from requirements.txt
         run: |
-          ESPHOME_VERSION=$(grep -oP 'esphome==\K[0-9.]+' requirements.txt)
+          ESPHOME_VERSION=$(grep -oP 'esphome==\K[^\s]+' requirements.txt)
           echo "ESPHOME_VERSION=${ESPHOME_VERSION}" >> $GITHUB_ENV
 
       - name: Build ESPHome firmware
-        uses: esphome/build-action@v7.1.0
+        uses: esphome/build-action@v7.2.0
         with:
           yaml-file: "config/${{ matrix.device }}.yaml"
           complete-manifest: true
@@ -181,7 +181,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Generate landing manifest
         run: |
