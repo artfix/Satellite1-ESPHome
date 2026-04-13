@@ -76,8 +76,8 @@ void XMOSFlasher::publish_progress_() {
     if (this->requested_action_ == ACTION_FULL_ERASE) {
       this->flashing_progress_ = this->current_sector_ * 100 / this->total_sectors_to_erase_;
     } else {
-      this->flashing_progress_ = ((this->current_sector_ + this->total_number_of_bytes_ - this->bytes_remaining_) * 100 /
-                                 (this->total_number_of_bytes_ + this->total_sectors_to_erase_));
+      this->flashing_progress_ = ((this->current_sector_ + this->total_number_of_bytes_ - this->bytes_remaining_) *
+                                  100 / (this->total_number_of_bytes_ + this->total_sectors_to_erase_));
     }
     this->last_published_ = now;
     ESP_LOGD(TAG, "Progress: %d%%", this->flashing_progress_);

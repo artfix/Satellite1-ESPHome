@@ -131,7 +131,9 @@ class MemoryFlasher : public Component {
   virtual bool flash_accessible() { return false; }
   bool has_image_embedded() { return this->embedded_image_.length > 0; }
 
-  bool match_embedded(const uint8_t *to_compare) { return memcmp(this->embedded_image_.version.bytes, to_compare, 5) == 0; }
+  bool match_embedded(const uint8_t *to_compare) {
+    return memcmp(this->embedded_image_.version.bytes, to_compare, 5) == 0;
+  }
 
   void set_embedded_image(const uint8_t *pgm_pointer, size_t length, std::string expected_md5,
                           const char version_bytes[5]) {
@@ -149,7 +151,9 @@ class MemoryFlasher : public Component {
   void set_md5(const std::string &md5) { this->md5_expected_ = md5; }
   void set_url(const std::string &url);
 
-  template<typename F> void add_on_state_callback(F &&callback) { this->state_callback_.add(std::forward<F>(callback)); }
+  template<typename F> void add_on_state_callback(F &&callback) {
+    this->state_callback_.add(std::forward<F>(callback));
+  }
   void publish() {
     // this->defer([this]() { this->state_callback_.call(); });
     this->state_callback_.call();
