@@ -2,21 +2,27 @@ name: Lint
 
 on:
   pull_request:
-    branches: [main]
+    branches: [main, develop]
 
 jobs:
   clang-format:
-    name: clang-format
+    name: clang-format (components)
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6
 
-      - name: Run clang-format
+      - name: Run clang-format on components/
         uses: jidicula/clang-format-action@v4.16.0
         with:
           clang-format-version: '18'
           check-path: 'components'
+
+      - name: Run clang-format on esphome/components/
+        uses: jidicula/clang-format-action@v4.16.0
+        with:
+          clang-format-version: '18'
+          check-path: 'esphome/components'
 
   yamllint:
     name: yamllint
