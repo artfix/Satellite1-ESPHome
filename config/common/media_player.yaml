@@ -123,7 +123,7 @@ fusb302b:
   request_voltage: 20
   contract_sensor:
     id: pd_state_text
-    name: "USB-C Power Draw"
+    name: "USB-C Power Contract"
     icon: "mdi:usb-c-port"
     entity_category: "diagnostic"
   on_power_ready:

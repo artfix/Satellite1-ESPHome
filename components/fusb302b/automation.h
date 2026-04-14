@@ -4,7 +4,7 @@
 #include "pd.h"
 
 namespace esphome {
-namespace power_delivery {
+namespace fusb302b {
 
 template<typename... Ts> class PowerDeliveryRequestVoltage : public Action<Ts...>, public Parented<PowerDelivery> {
  public:
@@ -63,5 +63,5 @@ template<typename... Ts> class IsConnectedCondition : public Condition<Ts...>, p
   }
 };
 
-}  // namespace power_delivery
+}  // namespace fusb302b
 }  // namespace esphome

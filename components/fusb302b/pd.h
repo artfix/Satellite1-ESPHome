@@ -4,10 +4,14 @@
 #include "esphome/core/defines.h"
 #include "esphome/core/hal.h"
 #include "esphome/core/helpers.h"
-#include "esphome/components/text_sensor/text_sensor.h"
 
 namespace esphome {
-namespace power_delivery {
+#ifdef USE_TEXT_SENSOR
+namespace text_sensor {
+class TextSensor;
+}  // namespace text_sensor
+#endif
+namespace fusb302b {
 
 static constexpr uint8_t PD_MAX_NUM_DATA_OBJECTS = 7;
 
@@ -158,10 +162,14 @@ class PowerDelivery {
   void set_ams(bool ams);
   bool check_ams();
 
+#ifdef USE_TEXT_SENSOR
   void set_contract_sensor(text_sensor::TextSensor *sensor) { this->contract_sensor_ = sensor; }
+#endif
 
  protected:
+#ifdef USE_TEXT_SENSOR
   text_sensor::TextSensor *contract_sensor_{nullptr};
+#endif
   uint32_t active_ams_timer_{0};
   bool active_ams_{false};
 
@@ -208,5 +216,5 @@ class PowerDelivery {
 
 PDMsg build_get_sink_cap_response(const PowerDelivery *pd);
 
-}  // namespace power_delivery
+}  // namespace fusb302b
 }  // namespace esphome

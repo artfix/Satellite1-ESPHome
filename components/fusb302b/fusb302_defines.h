@@ -2,7 +2,7 @@
 #include <cstdint>
 
 namespace esphome {
-namespace power_delivery {
+namespace fusb302b {
 
 // Register addresses
 static constexpr uint8_t FUSB_DEVICE_ID = 0x01;
@@ -144,5 +144,5 @@ static constexpr uint8_t FUSB_FIFO_RX_SOP2 = 0xA0;
 static constexpr uint8_t FUSB_FIFO_RX_SOP1DB = 0x80;
 static constexpr uint8_t FUSB_FIFO_RX_SOP2DB = 0x60;
 
-}  // namespace power_delivery
+}  // namespace fusb302b
 }  // namespace esphome

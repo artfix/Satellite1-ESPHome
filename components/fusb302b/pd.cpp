@@ -6,7 +6,7 @@
 #include "esphome/core/log.h"
 
 namespace esphome {
-namespace power_delivery {
+namespace fusb302b {
 
 static const char *const TAG = "PowerDelivery";
 
@@ -207,10 +207,10 @@ bool PowerDelivery::request_voltage(int voltage) {
 PDMsg::PDMsg(uint16_t header) { this->set_header(header); }
 
 bool PDMsg::set_header(uint16_t header) {
-  this->type = static_cast<PdDataMsgType>((header >> 0) & 0x1F);      /* 4...0  Message Type */
-  this->spec_rev = static_cast<PdSpecRevision>((header >> 6) & 0x3);  /* 7...6  Specification Revision */
-  this->id = (header >> 9) & 0x7;                                     /* 11...9  MessageID */
-  this->num_of_obj = (header >> 12) & 0x7;                            /* 14...12 Number of Data Objects */
+  this->type = static_cast<PdDataMsgType>((header >> 0) & 0x1F);     /* 4...0  Message Type */
+  this->spec_rev = static_cast<PdSpecRevision>((header >> 6) & 0x3); /* 7...6  Specification Revision */
+  this->id = (header >> 9) & 0x7;                                    /* 11...9  MessageID */
+  this->num_of_obj = (header >> 12) & 0x7;                           /* 14...12 Number of Data Objects */
   this->extended = (header >> 15) & 0x1;
   return true;
 }
@@ -256,5 +256,5 @@ void PDMsg::debug_log() const {
            this->num_of_obj, !!(this->extended), this->get_coded_header());
 }
 
-}  // namespace power_delivery
+}  // namespace fusb302b
 }  // namespace esphome
