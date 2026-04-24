@@ -12,8 +12,8 @@ substitutions:
   friendly_name: "Satellite1"
 
   # OPTIONAL: Sensor calibration (adjust based on your environment)
-  temp_offset: "-3"
-  humidity_offset: "5"
+  temp_offset: "0"
+  humidity_offset: "0"
 
 # Pull the complete Satellite1 configuration from GitHub
 packages:
@@ -31,6 +31,14 @@ packages:
 wifi:
   ssid: !secret wifi_ssid
   password: !secret wifi_password
+  use_address: 192.168.1.6
+  # Added local ip for wifi bug of not connecting
+
+# Added encryption key to pass the sat1 on-board, is a MUST
+api:
+  batch_delay: 50ms  # Reduce latency for real-time applications
+  encryption:
+    key: your_key_here
 
   # Fallback hotspot (if WiFi fails)
 #  ap:
