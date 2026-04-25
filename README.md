@@ -48,6 +48,10 @@ Install firmware directly from your browser (Chrome/Edge required):
 
 ---
 
+[ESPHome Encryption API Key Generator](https://github.com/artfix/ESPHome_API_Encryption_Key)
+
+---
+
 ## 🎵 What Makes This Different?
 
 ### Sendspin vs. Snapcast
