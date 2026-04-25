@@ -22,6 +22,7 @@ This firmware enables **synchronized multi-room audio** on the [FutureProofHomes
 - ✅ **Presence Detection** - Optional LD2410/LD2450 radar sensor support
 - ✅ **Power Optimized** - Smart DAC power management for reduced energy consumption
 - ✅ **Professional Hardware Drivers** - Optimized TAS2780, PCM5122, and FUSB302B drivers
+- ✅ **Extra** - Each wake word with his own sensibility change and each of them with 11 preset (all customizable, wake word's, sensibility preset's, name's ...)
 
 ---
 
